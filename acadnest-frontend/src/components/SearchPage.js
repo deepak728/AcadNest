@@ -19,6 +19,8 @@ const SearchPage = () => {
     { id: 10, name: 'Mia Gray', rollno: 'A010', email: 'mia.gray@example.com' },
   ];
   const handleSearchChange = (e) => {
+    if(e.target.value=='')
+      setSearched(false);
     setSearchQuery(e.target.value);
   };
 
@@ -27,11 +29,14 @@ const SearchPage = () => {
   };
 
   // Filter students based on the search query (case insensitive)
-  const filteredStudents = students.filter(student =>
-    student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    student.rollno.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    student.email.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const trimmedQuery = searchQuery.trim();
+  const filteredStudents = trimmedQuery
+    ? students.filter(student =>
+      student.name.toLowerCase().includes(trimmedQuery.toLowerCase()) ||
+      student.rollno.toLowerCase().includes(trimmedQuery.toLowerCase()) ||
+      student.email.toLowerCase().includes(trimmedQuery.toLowerCase())
+    )
+  : [];
 
   return (
     <div className="search-page">
