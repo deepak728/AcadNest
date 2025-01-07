@@ -10,6 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Student {
+    long id;
     String name;
     long rollNo;
     String emailId;

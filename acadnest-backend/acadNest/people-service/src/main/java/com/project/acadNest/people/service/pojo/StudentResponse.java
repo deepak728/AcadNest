@@ -10,6 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class StudentResponse {
+    long id;
     String name;
     long rollNo;
     Branch branch;

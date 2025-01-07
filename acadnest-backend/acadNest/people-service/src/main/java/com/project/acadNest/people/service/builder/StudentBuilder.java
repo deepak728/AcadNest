@@ -3,7 +3,6 @@ package com.project.acadNest.people.service.builder;
 import com.project.acadNest.people.service.dao.StudentDao;
 import com.project.acadNest.people.service.model.MStudent;
 import com.project.acadNest.people.service.pojo.Student;
-import com.project.acadNest.people.service.pojo.StudentResponse;
 import com.project.acadNest.people.service.transformer.StudentTransformer;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -53,6 +52,15 @@ public class StudentBuilder {
             log.error("Students not found for rollNo: " + rollNo);
             return Collections.emptyList();
         }
+    }
+
+    public Student save(Student student){
+        if(student==null) return null;
+        return StudentTransformer.toPojo(studentDao.save(StudentTransformer.toEntity(student)));
+    }
+
+    public void deleteStudentById(Long id){
+        studentDao.deleteById(id);
     }
 
 

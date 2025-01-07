@@ -18,6 +18,7 @@ public class StudentTransformer {
         }
 
         Student student = new Student();
+        student.setId(mStudent.getId());
         student.setName(mStudent.getName());
         student.setRollNo(mStudent.getRollNo());
         student.setEmailId(mStudent.getEmailId());
@@ -75,6 +76,7 @@ public class StudentTransformer {
         }
 
         StudentResponse studentResponse = new StudentResponse();
+        studentResponse.setId(student.getId());
         studentResponse.setName(student.getName());
         studentResponse.setRollNo(student.getRollNo());
         studentResponse.setBranch(student.getBranch());
