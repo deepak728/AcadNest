@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import StudentList from './StudentList'; // Import the StudentList component
 import './SearchPage.css'; // Import the CSS file for styling
 
 const SearchPage = () => {
@@ -23,24 +24,35 @@ const SearchPage = () => {
     setError(null);
 
     try {
-      const response = await fetch('https://81ddfa0a-a23a-466f-b66d-cf6f700d7ccf.mock.pstmn.io/search', {
+      console.log('Sending request to backend...');
+      const response = await fetch('http://localhost:8080/people/student/search', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ query: searchQuery.trim() }), // Sending search query in the request body
+        body: JSON.stringify({ field: searchQuery.trim() }),
       });
+
+      console.log('Response status:', response.status);
 
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
 
       const data = await response.json();
+      console.log('Data received:', data);
       setStudents(data);
     } catch (err) {
+      console.error('Error:', err);
       setError(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearchClick(); // Trigger search on Enter key
     }
   };
 
@@ -63,6 +75,7 @@ const SearchPage = () => {
           className="search-bar"
           value={searchQuery}
           onChange={handleSearchChange}
+          onKeyPress={handleKeyPress} // Add Enter key listener
           placeholder="Search Name, Roll No, Email"
         />
         <button className="search-button" onClick={handleSearchClick}>
@@ -75,13 +88,7 @@ const SearchPage = () => {
         {loading && <p>Loading students...</p>}
         {error && <p>Error: {error}</p>}
         {searched && !loading && !error && students.length > 0 ? (
-          students.map((student, index) => (
-            <div key={student.id} className="student-tile">
-              <h3>{student.name}</h3>
-              <p>Roll No: {student.rollno}</p>
-              <p>Email: {student.email}</p>
-            </div>
-          ))
+          <StudentList students={students} />
         ) : searched && !loading && !error ? (
           <p>No students found.</p>
         ) : null}
