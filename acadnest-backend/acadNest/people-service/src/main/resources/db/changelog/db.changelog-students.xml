@@ -11,7 +11,7 @@
             CREATE TABLE students (
             id BIGSERIAL PRIMARY KEY,
             name VARCHAR(255) NOT NULL,
-            roll_no BIGINT NOT NULL,
+            roll_no BIGINT NOT NULL UNIQUE,
             email_id VARCHAR(255) NOT NULL,
             branch VARCHAR(50) NOT NULL,
             year VARCHAR(50) NOT NULL,
