@@ -65,7 +65,7 @@ const handleSubmit = async (e) => {
         <div className="find-people">Add Student</div>
         <div className="top-buttons">
         <button className="button">Home</button>
-          <button className="button" onClick={() => navigate("/")}>
+          <button className="button" onClick={() => navigate("/search")}>
             Search Student
           </button>
           <button className="button">MyProfile</button>

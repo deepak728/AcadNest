@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import StudentList from './StudentList'; // Import the StudentList component
 import './SearchPage.css'; // Import the CSS file for styling
 
 const SearchPage = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [students, setStudents] = useState([]);
   const [searched, setSearched] = useState(false);
@@ -64,9 +65,9 @@ const SearchPage = () => {
         <div className="find-people">Search Student</div>
         <div className="top-buttons">
           <button className="button">Home</button>
-          <Link to="/add-student" className="button">
+          <button className="button" onClick={() => navigate("/add-student")}>
             Add Student
-          </Link>
+          </button>
           <button className="button">MyProfile</button>
           <button className="button">Logout</button>
         </div>
