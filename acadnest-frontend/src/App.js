@@ -1,14 +1,17 @@
-// src/App.js
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import SearchPage from "./components/SearchPage"; // Search Student Page
+import AddStudent from "./components/AddStudent"; // Add Student Page
 
-import React from 'react';
-import SearchPage from './components/SearchPage';
-
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <SearchPage />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<SearchPage />} />
+        <Route path="/add-student" element={<AddStudent />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;

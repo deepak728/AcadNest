@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from "react-router-dom";
 import StudentList from './StudentList'; // Import the StudentList component
 import './SearchPage.css'; // Import the CSS file for styling
 
@@ -60,9 +61,12 @@ const SearchPage = () => {
     <div className="search-page">
       {/* Tile with Find People and buttons */}
       <div className="top-tile">
-        <div className="find-people">Find People</div>
+        <div className="find-people">Search Student</div>
         <div className="top-buttons">
           <button className="button">Home</button>
+          <Link to="/add-student" className="button">
+            Add Student
+          </Link>
           <button className="button">MyProfile</button>
           <button className="button">Logout</button>
         </div>
@@ -84,7 +88,7 @@ const SearchPage = () => {
       </div>
 
       {/* Display loading, error, or student tiles */}
-      <div className="student-grid">
+     <div className="student-grid">
         {loading && <p>Loading students...</p>}
         {error && <p>Error: {error}</p>}
         {searched && !loading && !error && students.length > 0 ? (

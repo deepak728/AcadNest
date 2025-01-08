@@ -1,7 +1,7 @@
 import React from 'react';
 
 const defaultImage =
-  'https://as1.ftcdn.net/jpg/00/64/67/52/1000_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg'; // Default photo link
+  'https://i.pinimg.com/originals/5b/89/f1/5b89f121462393c9144af1dfaa3aa85b.jpg'; // Default photo link
 
 const StudentList = ({ students }) => {
   return (
