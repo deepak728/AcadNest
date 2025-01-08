@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -74,8 +75,16 @@ public class StudentComponent {
     public Student addStudent(Map<String,Object> params) throws BadRequestException {
         validateStudent(params);
 
-        Student savedStudent= studentBuilder.save(getStudentPojo(params));
-        log.info("Saved Student {}",savedStudent);
+        Student savedStudent= null;
+
+        try{
+            savedStudent= studentBuilder.save(getStudentPojo(params));
+            log.info("Saved Student {}",savedStudent);
+        } catch (DataIntegrityViolationException e){
+            if (e.getRootCause() != null && e.getRootCause().getMessage().contains("duplicate key value violates unique constraint")) {
+                throw new BadRequestException("Roll number already exists");
+            }
+        }
 
         if(savedStudent==null)
             throw new BadRequestException("Unsuccessful");
