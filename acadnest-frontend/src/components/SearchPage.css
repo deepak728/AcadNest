@@ -1,10 +1,14 @@
+/* src/SearchPage.css */
+
 /* Overall search page container */
 .search-page {
   font-family: 'Arial', sans-serif;
   margin: 0 auto; /* Center the page content */
   padding: 20px; /* Add padding around the page */
   width: 100%; /* Full width */
+  max-width: 100vw; /* Make sure the container doesn't exceed the viewport width */
   box-sizing: border-box; /* Include padding in width calculations */
+  overflow-x: hidden; /* Hide any horizontal overflow */
 }
 
 /* Top bar container */
@@ -20,14 +24,38 @@
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for elevation */
   margin-bottom: 20px; /* Space below the top bar */
+  width: 100%;
+  box-sizing: border-box; /* Include padding in width calculation */
 }
 
-/* Top bar buttons */
+/* Left-aligned "ACADNEST" */
+.find-people-left {
+  font-weight: bold;
+  font-size: 24px;
+  flex-basis: 15%; /* Allow left part to take up minimal space */
+  color: black; /* Make ACADNEST text black */
+}
+
+/* Center-aligned "Find People" */
+.find-people-center {
+  font-weight: bold;
+  font-size: 24px;
+  text-align: center; /* Center the text */
+  flex-grow: 1; /* Allow this section to take up the remaining space */
+  display: flex;
+  justify-content: center;
+}
+
+/* Right-aligned buttons */
 .top-buttons {
   display: flex;
   gap: 10px;
+  flex-basis: 20%; /* Allow the buttons to take up some space */
+  justify-content: flex-end; /* Align buttons to the right */
+  padding-right: 10px; /* Add right margin to space out the buttons */
 }
 
+/* Button styling */
 .button {
   background-color: white;
   color: #4caf50;
@@ -42,6 +70,8 @@
 .button:hover {
   background-color: #e7e7e7;
 }
+
+
 
 /* Search container */
 .search-container {

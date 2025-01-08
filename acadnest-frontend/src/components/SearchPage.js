@@ -60,9 +60,10 @@ const SearchPage = () => {
 
   return (
     <div className="search-page">
-      {/* Tile with Find People and buttons */}
+      {/* Top tile with ACADNEST, Find People, and buttons */}
       <div className="top-tile">
-        <div className="find-people">Search Student</div>
+        <div className="find-people-left">ACADNEST</div> {/* Left-aligned ACADNEST */}
+        <div className="find-people-center">Find People</div> {/* Center-aligned Find People */}
         <div className="top-buttons">
           <button className="button">Home</button>
           <button className="button" onClick={() => navigate("/add-student")}>

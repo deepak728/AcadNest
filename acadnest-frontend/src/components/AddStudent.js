@@ -59,15 +59,14 @@ const handleSubmit = async (e) => {
 
 
   return (
-    <div className="add-student-page">
+   <div className="add-student-page">
       {/* Top Tile */}
       <div className="top-tile">
-        <div className="find-people">Add Student</div>
+        <div className="find-people-left">ACADNEST</div>
+        <div className="find-people-center">Add Student</div>
         <div className="top-buttons">
-        <button className="button">Home</button>
-          <button className="button" onClick={() => navigate("/search")}>
-            Search Student
-          </button>
+          <button className="button" onClick={() => navigate("/")}>Home</button>
+          <button className="button" onClick={() => navigate("/search")}>Search Student</button>
           <button className="button">MyProfile</button>
           <button className="button">Logout</button>
         </div>
