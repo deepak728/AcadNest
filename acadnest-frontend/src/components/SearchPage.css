@@ -16,32 +16,32 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px; /* Add horizontal padding */
+  padding: 15px 20px;
   background-color: #4caf50;
   color: white;
   font-size: 24px;
   font-weight: bold;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for elevation */
-  margin-bottom: 20px; /* Space below the top bar */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
   width: 100%;
-  box-sizing: border-box; /* Include padding in width calculation */
+  box-sizing: border-box;
 }
 
 /* Left-aligned "ACADNEST" */
 .find-people-left {
   font-weight: bold;
   font-size: 24px;
-  flex-basis: 15%; /* Allow left part to take up minimal space */
-  color: black; /* Make ACADNEST text black */
+  flex-basis: 15%;
+  color: black;
 }
 
 /* Center-aligned "Find People" */
 .find-people-center {
   font-weight: bold;
   font-size: 24px;
-  text-align: center; /* Center the text */
-  flex-grow: 1; /* Allow this section to take up the remaining space */
+  text-align: center;
+  flex-grow: 1;
   display: flex;
   justify-content: center;
 }
@@ -50,10 +50,10 @@
 .top-buttons {
   display: flex;
   gap: 10px;
-  flex-basis: 20%; /* Allow the buttons to take up some space */
-  justify-content: flex-end; /* Align buttons to the right */
-  padding-right: 10px; /* Add right margin to space out the buttons */
+  flex-basis: 20%;
+  justify-content: flex-end;
 }
+
 
 /* Button styling */
 .button {
@@ -175,5 +175,32 @@
 @media (min-width: 769px) and (max-width: 1024px) {
   .student-grid {
     grid-template-columns: repeat(2, 1fr); /* 2 columns for medium screens */
+  }
+}
+
+
+@media (max-width: 768px) {
+  .top-tile {
+    flex-direction: column; /* Stack items vertically on mobile */
+    text-align: center; /* Center the content on mobile */
+  }
+
+  /* Adjust the left and center-aligned elements */
+  .find-people-left,
+  .find-people-center {
+    flex-basis: 100%; /* Take up full width */
+    text-align: center; /* Center the text on mobile */
+  }
+
+  /* Adjust the buttons for mobile */
+  .top-buttons {
+    flex-basis: 100%;
+    justify-content: center; /* Center the buttons on mobile */
+    gap: 15px; /* Increase gap between buttons */
+  }
+
+  /* Reduce font size for mobile */
+  .top-tile {
+    font-size: 20px; /* Smaller font size for mobile */
   }
 }
