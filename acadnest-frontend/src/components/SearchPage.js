@@ -27,7 +27,7 @@ const SearchPage = () => {
 
     try {
       console.log('Sending request to backend...');
-      const response = await fetch('http://localhost:8080/people/student/search', {
+      const response = await fetch('http://ec2-13-233-136-208.ap-south-1.compute.amazonaws.com:8080/people/student/search', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

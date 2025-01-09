@@ -29,7 +29,7 @@ const handleSubmit = async (e) => {
   setSuccess(""); 
 
   try {
-    const response = await fetch("http://localhost:8080/people/student/addStudent", {
+    const response = await fetch("http://ec2-13-233-136-208.ap-south-1.compute.amazonaws.com:8080/people/student/addStudent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),

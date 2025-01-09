@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import SearchPage from "./components/SearchPage"; // Your search page component
 import AddStudentPage from "./components/AddStudent"; // Your add student page component
 
