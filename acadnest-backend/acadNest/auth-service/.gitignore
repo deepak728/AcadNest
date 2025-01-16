@@ -1,0 +1,52 @@
+# Build output directories
+target/
+build/
+
+# IntelliJ IDEA
+.idea/
+../.idea/
+*.iws
+*.iml
+*.ipr
+
+# Eclipse
+.project
+.classpath
+.settings/
+.factorypath
+.springBeans
+.sts4-cache
+
+# VS Code
+.vscode/
+
+# Maven/Gradle wrapper and build artifacts
+!.mvn/wrapper/maven-wrapper.jar
+.mvn/
+mvnw
+mvnw.cmd
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# Logs
+*.log
+*/logs
+# OS-specific files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# NetBeans specific files
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# Spring Boot related
+target/*.jar
+target/*.war
+target/*.ear
+
+/HELP.md

@@ -1,0 +1,32 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="db-change-1.0" author="Deepak">
+        <sql>
+            CREATE TABLE users (
+            id BIGSERIAL PRIMARY KEY,
+            email VARCHAR(255) UNIQUE NOT NULL,
+            password VARCHAR(255),           -- Nullable for Google login users
+            google_id VARCHAR(255) UNIQUE,   -- Nullable for email-password users
+            role VARCHAR(50) DEFAULT 'USER', -- Role (e.g., USER, ADMIN)
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,  -- NOT NULL
+            updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP   -- NOT NULL
+            );
+        </sql>
+
+        <sql>
+            CREATE TABLE refresh_tokens (
+            id BIGSERIAL PRIMARY KEY,
+            user_id INT REFERENCES users(id) ON DELETE CASCADE,
+            token TEXT NOT NULL UNIQUE,       -- Refresh token
+            expiry TIMESTAMP NOT NULL,        -- Expiration time
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP   -- NOT NULL
+            );
+        </sql>
+
+    </changeSet>
+
+</databaseChangeLog>
