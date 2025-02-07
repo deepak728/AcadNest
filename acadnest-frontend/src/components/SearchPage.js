@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import StudentList from './StudentList'; // Import the StudentList component
 import './SearchPage.css'; // Import the CSS file for styling
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 const SearchPage = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
@@ -14,6 +16,8 @@ const SearchPage = () => {
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
+  console.log("API_BASE_URL:", process.env.REACT_APP_API_BASE_URL);
+
 
   const handleSearchClick = async () => {
     if (!searchQuery.trim()) {
@@ -27,7 +31,7 @@ const SearchPage = () => {
 
     try {
       console.log('Sending request to backend...');
-      const response = await fetch('http://ec2-13-233-136-208.ap-south-1.compute.amazonaws.com:8080/people/student/search', {
+      const response = await fetch(`${API_BASE_URL}/people/student/search`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AddStudent.css";
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 const AddStudent = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -28,12 +29,12 @@ const handleSubmit = async (e) => {
   setError(""); 
   setSuccess(""); 
 
-  try {
-    const response = await fetch("http://ec2-13-233-136-208.ap-south-1.compute.amazonaws.com:8080/people/student/addStudent", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
+ try {
+  const response = await fetch(`${API_BASE_URL}/people/student/addStudent`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(formData),
+  });
 
     if (!response.ok) {
       const contentType = response.headers.get("Content-Type");
