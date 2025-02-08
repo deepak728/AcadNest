@@ -1,15 +1,21 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import SearchPage from "./components/SearchPage"; // Your search page component
-import AddStudentPage from "./components/AddStudent"; // Your add student page component
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import LoginPage from "./components/LoginPage";
+import SignUpPage from "./components/SignUpPage";
+import SearchPage from "./components/SearchPage";
+import AddStudentPage from "./components/AddStudent";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/search" element={<SearchPage />} />   {/* Search Page route */}
-        <Route path="/add-student" element={<AddStudentPage />} />  {/* Add Student Page route */}
-        <Route path="/" element={<SearchPage />} />  {/* Default route */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/add-student" element={<AddStudentPage />} />
+        
+        {/* Redirect "/" to "/login" */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>
   );
