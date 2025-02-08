@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import StudentList from './StudentList'; // Import the StudentList component
-import './SearchPage.css'; // Import the CSS file for styling
+import StudentList from './StudentList'; 
+import './SearchPage.css'; 
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -16,8 +16,6 @@ const SearchPage = () => {
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
-  console.log("API_BASE_URL:", process.env.REACT_APP_API_BASE_URL);
-
 
   const handleSearchClick = async () => {
     if (!searchQuery.trim()) {
@@ -30,26 +28,19 @@ const SearchPage = () => {
     setError(null);
 
     try {
-      console.log('Sending request to backend...');
       const response = await fetch(`${API_BASE_URL}/people/student/search`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ field: searchQuery.trim() }),
       });
-
-      console.log('Response status:', response.status);
 
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
 
       const data = await response.json();
-      console.log('Data received:', data);
       setStudents(data);
     } catch (err) {
-      console.error('Error:', err);
       setError(err.message);
     } finally {
       setLoading(false);
@@ -58,50 +49,32 @@ const SearchPage = () => {
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
-      handleSearchClick(); // Trigger search on Enter key
+      handleSearchClick();
     }
   };
 
   return (
     <div className="search-page">
-      {/* Top tile with ACADNEST, Find People, and buttons */}
       <div className="top-tile">
-        <div className="find-people-left">ACADNEST</div> {/* Left-aligned ACADNEST */}
-        <div className="find-people-center">Find People</div> {/* Center-aligned Find People */}
+        <div className="find-people-left">ACADNEST</div>
+        <div className="find-people-center">Find People</div>
         <div className="top-buttons">
-          <button className="button">Home</button>
-          <button className="button" onClick={() => navigate("/add-student")}>
-            Add Student
-          </button>
-          <button className="button">MyProfile</button>
+          <button className="button" onClick={() => navigate("/search")}>Home</button>
+          <button className="button" onClick={() => navigate("/add-student")}>Add Student</button>
+          <button className="button" onClick={() => navigate("/profile")}>MyProfile</button>
           <button className="button">Logout</button>
         </div>
       </div>
 
-      {/* Search Bar */}
       <div className="search-container">
-        <input
-          type="text"
-          className="search-bar"
-          value={searchQuery}
-          onChange={handleSearchChange}
-          onKeyPress={handleKeyPress} // Add Enter key listener
-          placeholder="Search Name, Roll No, Email"
-        />
-        <button className="search-button" onClick={handleSearchClick}>
-          Search
-        </button>
+        <input type="text" className="search-bar" value={searchQuery} onChange={handleSearchChange} onKeyPress={handleKeyPress} placeholder="Search Name, Roll No, Email" />
+        <button className="search-button" onClick={handleSearchClick}>Search</button>
       </div>
 
-      {/* Display loading, error, or student tiles */}
-     <div className="student-grid">
+      <div className="student-grid">
         {loading && <p>Loading students...</p>}
         {error && <p>Error: {error}</p>}
-        {searched && !loading && !error && students.length > 0 ? (
-          <StudentList students={students} />
-        ) : searched && !loading && !error ? (
-          <p>No students found.</p>
-        ) : null}
+        {searched && !loading && !error && students.length > 0 ? <StudentList students={students} /> : searched && !loading && !error ? <p>No students found.</p> : null}
       </div>
     </div>
   );

@@ -1,56 +1,47 @@
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import "./SearchPage.css"; // Use the same CSS for consistency
 
-function ProfilePage() {
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const email = params.get("email");
+const ProfilePage = () => {
+  const navigate = useNavigate();
 
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    // Simulate API call to fetch user info
-    async function fetchUserInfo() {
-      try {
-        console.log(`Fetching user info for ${email}`);
-        // Replace this with actual API call
-        const userData = {
-          name: "John Doe",
-          rollNo: "123456",
-          email: email || "johndoe@example.com",
-          branch: "Computer Science",
-          year: "3rd Year",
-          photo: "https://via.placeholder.com/100",
-          phone: "9876543210",
-        };
-        setUser(userData);
-      } catch (error) {
-        console.error("Failed to fetch user info", error);
-      }
-    }
-
-    fetchUserInfo();
-  }, [email]);
-
-  if (!user) return <h2>Loading profile...</h2>;
+  // Mock data (Replace this with an API call to fetch user data)
+  const user = {
+    name: "John Doe",
+    rollNo: "12345",
+    email: "john@example.com",
+    branch: "Computer Science",
+    year: "3rd Year",
+    photo: "https://via.placeholder.com/100",
+    phoneNo: "9876543210",
+  };
 
   return (
-    <div style={styles.container}>
-      <h2>Profile</h2>
-      <img src={user.photo} alt="Profile" style={styles.image} />
-      <p><strong>Name:</strong> {user.name}</p>
-      <p><strong>Roll No:</strong> {user.rollNo}</p>
-      <p><strong>Email:</strong> {user.email}</p>
-      <p><strong>Branch:</strong> {user.branch}</p>
-      <p><strong>Year:</strong> {user.year}</p>
-      <p><strong>Phone:</strong> {user.phone}</p>
+    <div className="search-page">
+      <div className="top-tile">
+        <div className="find-people-left">ACADNEST</div>
+        <div className="find-people-center">My Profile</div>
+        <div className="top-buttons">
+          <button className="button" onClick={() => navigate("/search")}>Search Student</button>
+          <button className="button" onClick={() => navigate("/add-student")}>Add Student</button>
+          <button className="button">Logout</button>
+        </div>
+      </div>
+
+      {/* Profile Details */}
+      <div className="profile-container">
+        <img src={user.photo} alt="Profile" className="profile-photo" />
+        <div className="profile-info">
+          <p><strong>Name:</strong> {user.name}</p>
+          <p><strong>Roll No:</strong> {user.rollNo}</p>
+          <p><strong>Email:</strong> {user.email}</p>
+          <p><strong>Branch:</strong> {user.branch}</p>
+          <p><strong>Year:</strong> {user.year}</p>
+          <p><strong>Phone No:</strong> {user.phoneNo}</p>
+        </div>
+      </div>
     </div>
   );
-}
-
-const styles = {
-  container: { textAlign: "center", padding: "20px" },
-  image: { borderRadius: "50%", width: "100px", height: "100px", marginBottom: "10px" },
 };
 
 export default ProfilePage;

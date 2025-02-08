@@ -1,11 +1,12 @@
 package com.project.acadNest.auth.service.controller;
 
 
-import com.project.acadNest.auth.service.constant.ROLE;
-import com.project.acadNest.auth.service.pojo.User;
+import com.project.acadNest.auth.service.component.OAuthComponent;
+import com.project.acadNest.auth.service.pojo.AuthResponsePojo;
 import com.project.acadNest.auth.service.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,8 @@ public class OAuthController {
     private final OAuth2AuthorizedClientService authorizedClientService;
     private final JwtUtil jwtUtil;  // Utility class for JWT generation
 
+    private final OAuthComponent oAuthComponent;
+
     @GetMapping("/google")
     public ResponseEntity<?> googleLogin(@AuthenticationPrincipal OAuth2User principal) {
         if (principal == null) {
@@ -41,18 +44,23 @@ public class OAuthController {
             log.error("Missing email or Google ID from OAuth response.");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid OAuth2 response");
         }
+        try{
+            AuthResponsePojo authResponsePojo = oAuthComponent.createUser(email,googleId);
+            return  ResponseEntity.status(HttpStatus.OK).body(authResponsePojo);
+        } catch (BadRequestException e){
+            log.error("Exception occurred during authentication {}",e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new AuthResponsePojo("",false,e.getMessage()));
+        } catch (Exception e){
+            log.error("Exception occurred during authentication {}",e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new AuthResponsePojo("",false,e.getMessage()));
+        }
 
-        User user = new User();
-        user.setGoogleId(googleId);
-        user.setEmailId(email);
-        user.setRole(ROLE.STUDENT);
-        log.info("User details: {}", user);
-
-        // Generate JWT token
-        String jwtToken = jwtUtil.generateToken(email, ROLE.STUDENT.toString());
-        log.info("Generated token: {}", jwtToken);
-
-        return ResponseEntity.ok(jwtToken);
     }
+
+    @GetMapping("/google/callback")
+    public ResponseEntity<?> googleCallback(@AuthenticationPrincipal OAuth2User principal) {
+        return googleLogin(principal);
+    }
+
 
 }
