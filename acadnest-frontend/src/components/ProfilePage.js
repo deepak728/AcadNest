@@ -1,45 +1,49 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import "./SearchPage.css"; // Use the same CSS for consistency
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ProfilePage = () => {
+  const location = useLocation();
   const navigate = useNavigate();
+  const [userDetails, setUserDetails] = useState(location.state?.userDetails || null);
 
-  // Mock data (Replace this with an API call to fetch user data)
-  const user = {
-    name: "John Doe",
-    rollNo: "12345",
-    email: "john@example.com",
-    branch: "Computer Science",
-    year: "3rd Year",
-    photo: "https://via.placeholder.com/100",
-    phoneNo: "9876543210",
+  useEffect(() => {
+    if (!userDetails) {
+      // Try fetching from localStorage
+      const token = localStorage.getItem("token");
+      if (token) {
+        setUserDetails(parseJwt(token)); // Decode JWT
+      } else {
+        console.error("No JWT found, redirecting to login...");
+        navigate("/login"); // Redirect if no token
+      }
+    }
+  }, [userDetails, navigate]);
+
+  useEffect(() => {
+    console.log("UserDetails:", userDetails);
+}, [userDetails]);
+
+
+  const parseJwt = (token) => {
+    try {
+      const base64Url = token.split(".")[1];
+      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      return JSON.parse(atob(base64));
+    } catch (error) {
+      console.error("Error decoding JWT:", error);
+      return null;
+    }
   };
 
-  return (
-    <div className="search-page">
-      <div className="top-tile">
-        <div className="find-people-left">ACADNEST</div>
-        <div className="find-people-center">My Profile</div>
-        <div className="top-buttons">
-          <button className="button" onClick={() => navigate("/search")}>Search Student</button>
-          <button className="button" onClick={() => navigate("/add-student")}>Add Student</button>
-          <button className="button">Logout</button>
-        </div>
-      </div>
+  if (!userDetails) {
+    return <h2>Loading Profile...</h2>;
+  }
 
-      {/* Profile Details */}
-      <div className="profile-container">
-        <img src={user.photo} alt="Profile" className="profile-photo" />
-        <div className="profile-info">
-          <p><strong>Name:</strong> {user.name}</p>
-          <p><strong>Roll No:</strong> {user.rollNo}</p>
-          <p><strong>Email:</strong> {user.email}</p>
-          <p><strong>Branch:</strong> {user.branch}</p>
-          <p><strong>Year:</strong> {user.year}</p>
-          <p><strong>Phone No:</strong> {user.phoneNo}</p>
-        </div>
-      </div>
+  return (
+    <div>
+      <h2>Welcome, {userDetails.sub}</h2>
+      <p>Email: {userDetails.sub}</p>
+      <p>Role: {userDetails.role}</p>
     </div>
   );
 };

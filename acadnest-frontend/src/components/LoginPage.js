@@ -1,13 +1,48 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const LoginPage = () => {
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    // After login, redirect to search page
-    navigate("/search");
+  const handleGoogleLogin = () => {
+    // Redirect to the backend OAuth2 endpoint
+    window.location.href = "http://localhost:8081/oauth2/authorization/google";
   };
+
+  // Handle the OAuth2 callback
+  const handleOAuthCallback = async () => {
+    try {
+      // Call the backend to get the JWT token and user details
+      const response = await axios.get("http://localhost:8081/oauth/google/callback");
+      const { jwt, isSuccessFul, message } = response.data;
+
+      if (isSuccessFul) {
+        // Store the JWT token in localStorage
+        localStorage.setItem("token", jwt);
+
+        // Parse the user details from the message
+        const userDetails = JSON.parse(message);
+        console.log("User details:", userDetails);
+
+        // Redirect to the profile page
+        navigate("/profile", { state: { userDetails } });
+      } else {
+        console.error("Authentication failed:", message);
+      }
+    } catch (error) {
+      console.error("OAuth2 callback failed:", error);
+    }
+  };
+
+  // Check for the OAuth2 callback on component mount
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get("code");
+    if (code) {
+      handleOAuthCallback();
+    }
+  }, []);
 
   return (
     <div style={styles.container}>
@@ -20,10 +55,13 @@ const LoginPage = () => {
       <input type="password" placeholder="Password" style={styles.input} />
 
       {/* Login Button */}
-      <button style={styles.button} onClick={handleLogin}>Login</button>
+      <button style={styles.button}>Login</button>
 
       {/* Google OAuth Button */}
-      <button style={{ ...styles.button, backgroundColor: "#DB4437" }}>
+      <button
+        style={{ ...styles.button, backgroundColor: "#DB4437" }}
+        onClick={handleGoogleLogin}
+      >
         Login with Google
       </button>
 
