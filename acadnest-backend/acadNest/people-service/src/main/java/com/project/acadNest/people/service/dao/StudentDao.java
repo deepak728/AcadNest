@@ -18,7 +18,9 @@ public interface StudentDao extends JpaRepository<MStudent,Long> {
 
     Optional<MStudent> findByRollNo(long rollNo);
 
-    Optional<MStudent> findByEmailId(String emailId);
+    @Query(value = "SELECT * FROM students WHERE email_id = :emailId LIMIT 1", nativeQuery = true)
+    Optional<MStudent> findByEmailId(@Param("emailId") String emailId);
+
 
     // Search students by name using regex
     @Query(value = "SELECT * FROM students WHERE name ~* :regex", nativeQuery = true)

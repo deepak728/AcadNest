@@ -5,10 +5,12 @@ import com.project.acadNest.people.service.constant.Year;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 
 @Data
 @Getter
 @Setter
+@Component
 public class Student {
     long id;
     String name;

@@ -59,9 +59,9 @@ const SearchPage = () => {
         <div className="find-people-left">ACADNEST</div>
         <div className="find-people-center">Find People</div>
         <div className="top-buttons">
-          <button className="button" onClick={() => navigate("/search")}>Home</button>
+          <button className="button" onClick={() => navigate("/")}>Home</button>
           <button className="button" onClick={() => navigate("/add-student")}>Add Student</button>
-          <button className="button" onClick={() => navigate("/profile")}>MyProfile</button>
+          <button className="button" onClick={() => navigate("/profile")}>Profile</button>
           <button className="button">Logout</button>
         </div>
       </div>

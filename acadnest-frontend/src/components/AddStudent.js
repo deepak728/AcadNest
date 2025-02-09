@@ -67,8 +67,8 @@ const handleSubmit = async (e) => {
         <div className="find-people-center">Add Student</div>
         <div className="top-buttons">
           <button className="button" onClick={() => navigate("/")}>Home</button>
-          <button className="button" onClick={() => navigate("/search")}>Search Student</button>
-          <button className="button">MyProfile</button>
+          <button className="button" onClick={() => navigate("/search")}>Find People</button>
+          <button className="button" onClick={() => navigate("/profile")}>Profile</button>
           <button className="button">Logout</button>
         </div>
       </div>

@@ -3,6 +3,7 @@ package com.project.acadNest.people.service.component;
 
 import com.project.acadNest.people.service.builder.StudentBuilder;
 import com.project.acadNest.people.service.constant.Branch;
+import com.project.acadNest.people.service.constant.Constants;
 import com.project.acadNest.people.service.constant.Year;
 import com.project.acadNest.people.service.pojo.Student;
 import com.project.acadNest.people.service.pojo.StudentResponse;
@@ -18,8 +19,6 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Map;
 
-import static com.project.acadNest.people.service.constant.Constants.*;
-
 @Data
 @Component
 @Slf4j
@@ -31,19 +30,19 @@ public class StudentComponent {
 
     public List<StudentResponse> findStudent(Map<String,Object> params) throws BadRequestException {
 
-        if(params==null || params.size()==0 || !params.containsKey(FIELD))
+        if(params==null || params.size()==0 || !params.containsKey(Constants.FIELD))
             throw new BadRequestException("Invalid payload");
         List<Student> studentList = null;
-        String field = params.get(FIELD).toString().trim();
+        String field = params.get(Constants.FIELD).toString().trim();
 
         switch (findInputType(field)) {
-            case NAME:
+            case Constants.NAME:
                 studentList = studentBuilder.findStudentByNameRegex(field);
                 break;
-            case EMAIL_Id:
+            case Constants.EMAIL_Id:
                 studentList = studentBuilder.findStudentByEmailRegex(field);
                 break;
-            case ROLL_NO:
+            case Constants.ROLL_NO:
                 studentList = studentBuilder.findStudentByRollNoRegex(field);
                 break;
             default:
@@ -55,20 +54,20 @@ public class StudentComponent {
     }
 
     private String findInputType(String field){
-        if(field == null || field.isEmpty()) return INVALID;
+        if(field == null || field.isEmpty()) return Constants.INVALID;
 
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         String rollNoRegex = "^\\d+$";
         String nameRegex = "^[A-Za-z\\s.'-]+$";
 
         if (field.matches(emailRegex)) {
-            return EMAIL_Id;
+            return Constants.EMAIL_Id;
         } else if (field.matches(rollNoRegex)) {
-            return ROLL_NO;
+            return Constants.ROLL_NO;
         } else if (field.matches(nameRegex)) {
-            return NAME;
+            return Constants.NAME;
         } else {
-            return INVALID;
+            return Constants.INVALID;
         }
     }
 
@@ -96,13 +95,13 @@ public class StudentComponent {
             Student student = new Student();
 
             // Trim all string fields
-            student.setName(params.get(NAME).toString().trim());
-            student.setRollNo(Long.parseLong(params.get(ROLL_NO).toString().trim()));
-            student.setEmailId(params.containsKey(EMAIL_Id) ? params.get(EMAIL_Id).toString().trim() : "");
-            student.setBranch(Branch.valueOf(params.get(BRANCH).toString().trim().toUpperCase()));
-            student.setYear(Year.valueOf(params.get(YEAR).toString().trim().toUpperCase()));
-            student.setPhoto(params.containsKey(PHOTO) ? params.get(PHOTO).toString().trim() : "");
-            student.setPhoneNo(params.containsKey(PHONE_NO) ? params.get(PHONE_NO).toString().trim() : "");
+            student.setName(params.get(Constants.NAME).toString().trim());
+            student.setRollNo(Long.parseLong(params.get(Constants.ROLL_NO).toString().trim()));
+            student.setEmailId(params.containsKey(Constants.EMAIL_Id) ? params.get(Constants.EMAIL_Id).toString().trim() : "");
+            student.setBranch(Branch.valueOf(params.get(Constants.BRANCH).toString().trim().toUpperCase()));
+            student.setYear(Year.valueOf(params.get(Constants.YEAR).toString().trim().toUpperCase()));
+            student.setPhoto(params.containsKey(Constants.PHOTO) ? params.get(Constants.PHOTO).toString().trim() : "");
+            student.setPhoneNo(params.containsKey(Constants.PHONE_NO) ? params.get(Constants.PHONE_NO).toString().trim() : "");
 
             return student;
         } catch (Exception e) {
@@ -114,30 +113,30 @@ public class StudentComponent {
     private void validateStudent(Map<String, Object> params) throws BadRequestException {
         if(params==null || params.size()==0 ) throw new BadRequestException("Invalid payload");
 
-        if(!params.containsKey(NAME) || !findInputType(params.get(NAME).toString()).equals(NAME))
+        if(!params.containsKey(Constants.NAME) || !findInputType(params.get(Constants.NAME).toString()).equals(Constants.NAME))
             throw new BadRequestException("Invalid name");
-        if(!params.containsKey(ROLL_NO) || !findInputType(params.get(ROLL_NO).toString()).equals(ROLL_NO))
+        if(!params.containsKey(Constants.ROLL_NO) || !findInputType(params.get(Constants.ROLL_NO).toString()).equals(Constants.ROLL_NO))
             throw new BadRequestException("Invalid rollNo");
 
-        if(params.containsKey(EMAIL_Id) && !params.get(EMAIL_Id).toString().isEmpty() && !findInputType(params.get(EMAIL_Id).toString()).equals(EMAIL_Id))
+        if(params.containsKey(Constants.EMAIL_Id) && !params.get(Constants.EMAIL_Id).toString().isEmpty() && !findInputType(params.get(Constants.EMAIL_Id).toString()).equals(Constants.EMAIL_Id))
             throw new BadRequestException("Invalid emailId");
-        if(params.containsKey(PHONE_NO) && !params.get(PHONE_NO).toString().isEmpty() && !findInputType(params.get(PHONE_NO).toString()).equals(ROLL_NO))
+        if(params.containsKey(Constants.PHONE_NO) && !params.get(Constants.PHONE_NO).toString().isEmpty() && !findInputType(params.get(Constants.PHONE_NO).toString()).equals(Constants.ROLL_NO))
             throw new BadRequestException("Invalid phone no");
 
-        if(!params.containsKey(BRANCH))
+        if(!params.containsKey(Constants.BRANCH))
             throw new BadRequestException("Invalid Branch");
 
         try{
-            Branch.valueOf(params.get(BRANCH).toString().toUpperCase());
+            Branch.valueOf(params.get(Constants.BRANCH).toString().toUpperCase());
         } catch (Exception e){
             throw new BadRequestException("Invalid Branch");
         }
 
-        if(!params.containsKey(YEAR))
+        if(!params.containsKey(Constants.YEAR))
             throw new BadRequestException("Invalid Year");
 
         try{
-            Year.valueOf(params.get(YEAR).toString().toUpperCase());
+            Year.valueOf(params.get(Constants.YEAR).toString().toUpperCase());
         } catch (Exception e){
             throw new BadRequestException("Invalid Year");
         }
@@ -155,6 +154,14 @@ public class StudentComponent {
         }catch (Exception e){
             throw new BadRequestException("Unsuccessful");
         }
+    }
+
+    public Student getStudentByEmail(String email) throws BadRequestException {
+        if(email==null || email.isEmpty()){
+            throw new BadRequestException("Invalid email");
+        }
+
+        return studentBuilder.findByEmailId(email);
     }
 
 

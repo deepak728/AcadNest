@@ -12,32 +12,8 @@ const SignUpPage = () => {
   // Handle OAuth2 success response
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    const jwt = urlParams.get("jwt");
-
-    if (jwt) {
-      // Store JWT in localStorage
-      localStorage.setItem("token", jwt);
-
-      // Decode JWT to get user details (optional)
-      const userDetails = parseJwt(jwt);
-      console.log("User details:", userDetails);
-
-      // Redirect to profile page with user details
-      navigate("/profile", { state: { userDetails } });
-    }
   }, []);
 
-  // Function to decode JWT (Basic parsing, use a library like jwt-decode in production)
-  const parseJwt = (token) => {
-    try {
-      const base64Url = token.split(".")[1];
-      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-      return JSON.parse(atob(base64));
-    } catch (error) {
-      console.error("Error decoding JWT:", error);
-      return null;
-    }
-  };
 
   return (
     <div style={styles.container}>

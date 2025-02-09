@@ -1,7 +1,7 @@
 package com.project.acadNest.people.service.builder;
 
-import com.project.acadNest.people.service.dao.StudentDao;
 import com.project.acadNest.people.service.model.MStudent;
+import com.project.acadNest.people.service.dao.StudentDao;
 import com.project.acadNest.people.service.pojo.Student;
 import com.project.acadNest.people.service.transformer.StudentTransformer;
 import lombok.Getter;
@@ -61,6 +61,16 @@ public class StudentBuilder {
 
     public void deleteStudentById(Long id){
         studentDao.deleteById(id);
+    }
+
+    public Student findByEmailId(String emailId){
+        Optional<MStudent> mStudent = studentDao.findByEmailId(emailId);
+
+        if(mStudent.isPresent()){
+            log.info("MStudent : {}",mStudent);
+            return StudentTransformer.toPojo(mStudent.get());
+        }
+        return null;
     }
 
 

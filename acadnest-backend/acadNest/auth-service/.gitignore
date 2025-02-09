@@ -48,5 +48,3 @@ Desktop.ini
 target/*.jar
 target/*.war
 target/*.ear
-
-/HELP.md

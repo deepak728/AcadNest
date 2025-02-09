@@ -3,14 +3,12 @@ package com.project.acadNest.auth.service.controller;
 
 import com.project.acadNest.auth.service.component.OAuthComponent;
 import com.project.acadNest.auth.service.pojo.AuthResponsePojo;
-import com.project.acadNest.auth.service.util.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,9 +22,6 @@ import java.net.URLEncoder;
 @RequestMapping("/oauth")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class OAuthController {
-
-    private final OAuth2AuthorizedClientService authorizedClientService;
-    private final JwtUtil jwtUtil;  // Utility class for JWT generation
 
     private final OAuthComponent oAuthComponent;
 
@@ -53,7 +48,6 @@ public class OAuthController {
             AuthResponsePojo authResponsePojo = oAuthComponent.createUser(email, googleId);
             String jwt = authResponsePojo.getJwt();
 
-            // 🔥 Redirect to frontend with JWT 🔥
             response.sendRedirect("http://localhost:3000/oauth-success?jwt=" + URLEncoder.encode(jwt, "UTF-8"));
         } catch (BadRequestException e) {
             log.error("Exception during authentication: {}", e.getMessage());
@@ -63,12 +57,5 @@ public class OAuthController {
             response.sendRedirect("http://localhost:3000/login?error=internal_error");
         }
     }
-
-
-//    @GetMapping("/google/callback")
-//    public ResponseEntity<?> googleCallback(@AuthenticationPrincipal OAuth2User principal,HttpServletResponse response) {
-//        return googleLogin(principal,response);
-//    }
-
 
 }

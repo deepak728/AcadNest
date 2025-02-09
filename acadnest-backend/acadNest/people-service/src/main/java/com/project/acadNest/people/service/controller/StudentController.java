@@ -71,4 +71,19 @@ public class StudentController {
         }
     }
 
+    @GetMapping("/getByEmail")
+    public ResponseEntity<?> getStudentByEmail(@RequestParam("email") String email){
+        log.debug("Received request to get student by email");
+        try{
+            Student student = studentComponent.getStudentByEmail(email);
+            return ResponseEntity.ok(student);
+        } catch (BadRequestException e){
+            log.error("Exception occurred while fetching student: {}", e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            log.error("Exception occurred while fetching student: {}", e.getMessage());
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+    }
+
 }
