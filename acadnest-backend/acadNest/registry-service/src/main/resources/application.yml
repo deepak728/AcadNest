@@ -1,0 +1,22 @@
+server:
+  port: 8761
+
+spring:
+  application:
+    name: registry-service
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+logging:
+  file:
+    name: ./logs/registry-service.log
+  level:
+    root: DEBUG
+    org.springframework.web: DEBUG
+    org.hibernate: ERROR
+    com.project.acadNest: DEBUG
+  pattern:
+    console: ""

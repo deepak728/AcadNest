@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: people-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/acadnest
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+
+server:
+  host: 0.0.0.0
+  port: 8082
+
+logging:
+  file:
+    name: .././logs/people-service.log
+  level:
+    root: DEBUG
+    org.springframework.web: ERROR
+    org.hibernate: ERROR
+    com.project.acadNest: DEBUG
+    jdk.event.security: OFF
+  pattern:
+    console: ""

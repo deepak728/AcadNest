@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: auth-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/auth_service
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  liquibase:
+    enabled: true
+    change-log: classpath:/db.changelog/db.changelog.xml
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+
+            scope: profile,email
+            client-name: Google
+
+server:
+  host: 0.0.0.0
+  port: 8081
+
+logging:
+  file:
+    name: .././logs/auth-service.log
+  level:
+    root: DEBUG
+    org.springframework.web: ERROR
+    org.hibernate: ERROR
+    com.project.acadNest: DEBUG
+    jdk.event.security: OFF
+  pattern:
+    console: ""
