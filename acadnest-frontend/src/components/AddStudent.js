@@ -30,7 +30,7 @@ const handleSubmit = async (e) => {
   setSuccess(""); 
 
  try {
-  const response = await fetch(`${API_BASE_URL}/people/student/addStudent`, {
+  const response = await fetch(`${API_BASE_URL}/api-gateway/people/student/addStudent`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(formData),

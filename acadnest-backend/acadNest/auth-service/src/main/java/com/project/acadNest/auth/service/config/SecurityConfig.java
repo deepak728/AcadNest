@@ -18,21 +18,21 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login**", "/error**").permitAll() // Public endpoints
-                        .anyRequest().authenticated() // Secure all other endpoints
+                        .requestMatchers(
+                                "/", "/login**", "/error**",
+                                "/api-gateway/auth/**" // Allow API Gateway to access Auth Service
+                        ).permitAll()
+                        .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .defaultSuccessUrl("/oauth/google", true) // Redirect to /oauth/google after successful login
-                        .failureUrl("/login?error=oauth_failed") // Redirect on failure
+                        .defaultSuccessUrl("/oauth/google", true)
+                        .failureUrl("/login?error=oauth_failed")
                 );
         return http.build();
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }
-

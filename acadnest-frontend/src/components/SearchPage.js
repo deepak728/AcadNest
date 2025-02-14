@@ -28,11 +28,12 @@ const SearchPage = () => {
     setError(null);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/people/student/search`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ field: searchQuery.trim() }),
-      });
+  const response = await fetch(`${API_BASE_URL}/api-gateway/people/student/search`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ field: searchQuery.trim() }),
+  });
+
 
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);

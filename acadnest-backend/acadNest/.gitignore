@@ -29,8 +29,10 @@ mvnw.cmd
 !**/src/test/**/target/
 
 # Logs
+acadnest-backend/acadNest/logs/*
 *.log
 */logs
+*.logs
 # OS-specific files
 .DS_Store
 Thumbs.db

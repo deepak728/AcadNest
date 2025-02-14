@@ -1,39 +1,52 @@
+server:
+  port: 8080
+
 spring:
   application:
     name: api-gateway
 
-  datasource:
-    url: jdbc:postgresql://localhost:5432/api_gateway
-    username: postgres
-    password: postgres
-    driver-class-name: org.postgresql.Driver
+  cloud:
+    gateway:
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:3000"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            allowCredentials: true
+      routes:
+        - id: people-service
+          uri: lb://PEOPLE-SERVICE
+          predicates:
+            - Path=/api-gateway/people/**
+          filters:
+            - StripPrefix=1  # Removes '/api-gateway' before forwarding
 
-  liquibase:
-    enabled: true
-    change-log: classpath:/db.changelog/db.changelog.xml
-
-server:
-  host: 0.0.0.0
-  port: 8080
+        - id: auth-service
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/api-gateway/auth/**
+          filters:
+            - StripPrefix=1  # Removes '/api-gateway' before forwarding
 
 eureka:
   client:
-    service-url:
+    serviceUrl:
       defaultZone: http://localhost:8761/eureka/
-    register-with-eureka: true
-    fetch-registry: true
 
-  instance:
-    hostname: localhost
-    prefer-ip-address: true
 
 logging:
   file:
     name: .././logs/api-gateway.log
   level:
     root: DEBUG
-    org.springframework.web: ERROR
+    org.springframework: INFO
+    org.springframework.cloud.gateway: ERROR
     org.hibernate: ERROR
+    com.netflix.discovery: ERROR
+    reactor.netty: DEBUG
+    org.apache.hc.client5: ERROR
     com.project.acadNest: DEBUG
     jdk.event.security: OFF
   pattern:
