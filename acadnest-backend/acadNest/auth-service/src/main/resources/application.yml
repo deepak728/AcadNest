@@ -21,10 +21,29 @@ spring:
 
             scope: profile,email
             client-name: Google
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: email
+        redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+eureka:
+  instance:
+    hostname: localhost   # ✅ Forces Eureka to register as localhost
+    prefer-ip-address: false  # ✅ Uses hostname instead of IP
+    instance-id: ${spring.application.name}:${server.port}  # ✅ Unique instance ID
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+
 
 server:
   host: 0.0.0.0
   port: 8081
+
+
+
 
 logging:
   file:
@@ -35,5 +54,13 @@ logging:
     org.hibernate: ERROR
     com.project.acadNest: DEBUG
     jdk.event.security: OFF
+    org.apache.hc.client5.http: OFF
+    org.apache.hc.client5.http.wire: OFF
+    org.apache.hc.client5.http.headers: OFF
+    org.apache.hc.client5.http.impl.classic: OFF
+    org.apache.hc.client5.http.protocol: OFF
+    org.springframework.cloud.client.discovery: WARN
+    com.netflix.discovery: WARN
   pattern:
     console: ""
+

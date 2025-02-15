@@ -9,7 +9,7 @@ const SearchPage = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [students, setStudents] = useState([]);
-  const [searched, setSearched] = useState(false);
+  const [searched, setSearched] = useState(false); // ✅ Fix applied
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -27,13 +27,23 @@ const SearchPage = () => {
     setSearched(true);
     setError(null);
 
-    try {
-  const response = await fetch(`${API_BASE_URL}/api-gateway/people/student/search`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ field: searchQuery.trim() }),
-  });
+    const token = localStorage.getItem("jwt"); // Get JWT token
 
+    try {
+      const response = await fetch(`${API_BASE_URL}/api-gateway/people/student/search`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` // Attach JWT
+        },
+        body: JSON.stringify({ field: searchQuery.trim() }),
+      });
+
+      if (response.status === 401) {
+        // Unauthorized - redirect to Unauthorized Page
+        navigate("/unauthorized");
+        return;
+      }
 
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
@@ -54,6 +64,11 @@ const SearchPage = () => {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("jwt"); // Remove token
+    navigate("/login"); // Redirect to login page
+  };
+
   return (
     <div className="search-page">
       <div className="top-tile">
@@ -63,19 +78,30 @@ const SearchPage = () => {
           <button className="button" onClick={() => navigate("/")}>Home</button>
           <button className="button" onClick={() => navigate("/add-student")}>Add Student</button>
           <button className="button" onClick={() => navigate("/profile")}>Profile</button>
-          <button className="button">Logout</button>
+          <button className="button" onClick={handleLogout}>Logout</button>
         </div>
       </div>
 
       <div className="search-container">
-        <input type="text" className="search-bar" value={searchQuery} onChange={handleSearchChange} onKeyPress={handleKeyPress} placeholder="Search Name, Roll No, Email" />
+        <input 
+          type="text" 
+          className="search-bar" 
+          value={searchQuery} 
+          onChange={handleSearchChange} 
+          onKeyPress={handleKeyPress} 
+          placeholder="Search Name, Roll No, Email" 
+        />
         <button className="search-button" onClick={handleSearchClick}>Search</button>
       </div>
 
       <div className="student-grid">
         {loading && <p>Loading students...</p>}
         {error && <p>Error: {error}</p>}
-        {searched && !loading && !error && students.length > 0 ? <StudentList students={students} /> : searched && !loading && !error ? <p>No students found.</p> : null}
+        {searched && !loading && !error && students.length > 0 ? 
+          <StudentList students={students} /> 
+          : searched && !loading && !error ? <p>No students found.</p> 
+          : null
+        }
       </div>
     </div>
   );

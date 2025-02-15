@@ -4,10 +4,9 @@ import { useNavigate } from "react-router-dom";
 const SignUpPage = () => {
   const navigate = useNavigate();
 
-  const handleGoogleSignUp = () => {
-    // Redirect to the backend OAuth2 endpoint
-    window.location.href = "http://localhost:8081/oauth2/authorization/google";
-  };
+const handleGoogleSignUp = () => {
+    window.location.href = "http://localhost:8080/api-gateway/oauth2/authorization/google";
+};
 
   // Handle OAuth2 success response
   useEffect(() => {

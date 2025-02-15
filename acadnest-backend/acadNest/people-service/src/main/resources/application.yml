@@ -20,12 +20,15 @@ spring:
 server:
   host: 0.0.0.0
   port: 8082
+
 eureka:
   instance:
-    prefer-ip-address: true
+    hostname: localhost   # ✅ Forces Eureka to register as localhost
+    prefer-ip-address: false  # ✅ Uses hostname instead of IP
+    instance-id: ${spring.application.name}:${server.port}  # ✅ Unique instance ID
   client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
 
 
 logging:
@@ -37,5 +40,12 @@ logging:
     org.hibernate: ERROR
     com.project.acadNest: DEBUG
     jdk.event.security: OFF
+    org.apache.hc.client5.http: OFF
+    org.apache.hc.client5.http.wire: OFF
+    org.apache.hc.client5.http.headers: OFF
+    org.apache.hc.client5.http.impl.classic: OFF
+    org.apache.hc.client5.http.protocol: OFF
+    org.springframework.cloud.client.discovery: WARN
+    com.netflix.discovery: WARN
   pattern:
     console: ""

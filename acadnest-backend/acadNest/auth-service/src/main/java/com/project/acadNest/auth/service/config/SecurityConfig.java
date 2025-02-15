@@ -20,19 +20,22 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/", "/login**", "/error**",
-                                "/api-gateway/auth/**" // Allow API Gateway to access Auth Service
+                                "/auth/**", "/oauth2/**" // ✅ Allow OAuth2 endpoints
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .defaultSuccessUrl("/oauth/google", true)
+                        .defaultSuccessUrl("/auth/oauth/google", true)
                         .failureUrl("/login?error=oauth_failed")
                 );
         return http.build();
     }
+
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
+

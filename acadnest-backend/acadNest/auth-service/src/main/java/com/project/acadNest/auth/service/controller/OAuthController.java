@@ -19,7 +19,7 @@ import java.net.URLEncoder;
 
 @Slf4j
 @RestController
-@RequestMapping("/oauth")
+@RequestMapping("auth/oauth")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class OAuthController {
 

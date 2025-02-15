@@ -24,40 +24,44 @@ const AddStudent = () => {
     });
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError(""); 
-  setSuccess(""); 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(""); 
+    setSuccess(""); 
 
- try {
-  const response = await fetch(`${API_BASE_URL}/api-gateway/people/student/addStudent`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(formData),
-  });
+    const token = localStorage.getItem("jwt"); // Get JWT Token
 
-    if (!response.ok) {
-      const contentType = response.headers.get("Content-Type");
-      
-      if (contentType && contentType.includes("application/json")) {
-        // If the response is JSON, parse and use the message from it
-        const errorData = await response.json();
-        throw new Error(errorData.message || "An error occurred");
-      } else {
-        // If the response is plain text, read the response as text
-        const errorText = await response.text();
-        throw new Error(errorText || "An error occurred");
+    try {
+      const response = await fetch(`${API_BASE_URL}/api-gateway/people/student/addStudent`, {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}` // Attach JWT
+        },
+        body: JSON.stringify(formData),
+      });
+
+      // ✅ Unauthorized Handling: Redirect to /unauthorized
+      if (response.status === 401) {
+        navigate("/unauthorized");
+        return;
       }
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      setSuccess(data.message || "Student added successfully!");
+    } catch (err) {
+      setError(err.message);
     }
+  };
 
-    const data = await response.json();
-    setSuccess(data.message || "Student added successfully!");
-  } catch (err) {
-    setError(err.message);
-  }
-};
-
-
+  const handleLogout = () => {
+    localStorage.removeItem("jwt"); // Remove token
+    navigate("/login"); // Redirect to login page
+  };
 
   return (
    <div className="add-student-page">
@@ -69,7 +73,7 @@ const handleSubmit = async (e) => {
           <button className="button" onClick={() => navigate("/")}>Home</button>
           <button className="button" onClick={() => navigate("/search")}>Find People</button>
           <button className="button" onClick={() => navigate("/profile")}>Profile</button>
-          <button className="button">Logout</button>
+          <button className="button" onClick={handleLogout}>Logout</button>
         </div>
       </div>
 

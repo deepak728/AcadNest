@@ -7,7 +7,7 @@ const LoginPage = () => {
 
   const handleGoogleLogin = () => {
     // Redirect to the backend OAuth2 endpoint
-    window.location.href = "http://localhost:8081/oauth2/authorization/google";
+    window.location.href = "http://localhost:8080/api-gateway/oauth2/authorization/google";
   };
 
   // Check for the OAuth2 callback on component mount

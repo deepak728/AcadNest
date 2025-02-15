@@ -6,6 +6,8 @@ import AddStudentPage from "./components/AddStudent";
 import ProfilePage from "./components/ProfilePage";
 import SignUpPage from "./components/SignUpPage";
 import OAuthSuccess from "./components/OAuthSuccessPage";
+import Unauthorized from "./components/Unauthorized";
+
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path="/" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/oauth-success" element={<OAuthSuccess />} /> 
+        <Route path="/unauthorized" element={<Unauthorized />} />
+
       </Routes>
     </Router>
   );

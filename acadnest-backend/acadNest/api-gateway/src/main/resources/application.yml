@@ -16,24 +16,34 @@ spring:
             allowedHeaders: "*"
             allowCredentials: true
       routes:
-        - id: people-service
-          uri: lb://PEOPLE-SERVICE
-          predicates:
-            - Path=/api-gateway/people/**
-          filters:
-            - StripPrefix=1  # Removes '/api-gateway' before forwarding
-
         - id: auth-service
           uri: lb://AUTH-SERVICE
           predicates:
             - Path=/api-gateway/auth/**
           filters:
-            - StripPrefix=1  # Removes '/api-gateway' before forwarding
+            - StripPrefix=1
+        - id: auth-service-oauth
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/api-gateway/oauth2/**
+          filters:
+            - StripPrefix=1
+        - id: people-service
+          uri: lb://PEOPLE-SERVICE
+          predicates:
+            - Path=/api-gateway/people/**
+          filters:
+            - StripPrefix=1
 
 eureka:
+  instance:
+    hostname: localhost   # ✅ Forces Eureka to register as localhost
+    prefer-ip-address: false  # ✅ Uses hostname instead of IP
+    instance-id: ${spring.application.name}:${server.port}  # ✅ Unique instance ID
   client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
 
 
 logging:
@@ -51,3 +61,7 @@ logging:
     jdk.event.security: OFF
   pattern:
     console: ""
+
+
+auth:
+  login-page: "http://localhost:3000/login"
