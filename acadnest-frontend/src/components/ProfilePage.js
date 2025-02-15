@@ -45,7 +45,7 @@ const ProfilePage = () => {
           <button className="button" onClick={() => navigate("/")}>Home</button>
           <button className="button" onClick={() => navigate("/Search")}>Find People</button>
           <button className="button" onClick={() => navigate("/add-student")}>Add Student</button>
-          <button className="button">Logout</button>
+          <button className="button" onClick={() => navigate("/logout")}>Logout</button>
         </div>
       </div>
 

@@ -11,6 +11,7 @@
 	<artifactId>auth.service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>auth-service</name>
+	<packaging>jar</packaging>
 	<url/>
 	<licenses>
 		<license/>
@@ -118,6 +119,22 @@
 						</path>
 					</annotationProcessorPaths>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>repackage</id>
+						<phase>package</phase>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<configuration>
+							<skip>true</skip> <!-- This prevents making a fat JAR -->
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 

@@ -78,7 +78,8 @@ const SearchPage = () => {
           <button className="button" onClick={() => navigate("/")}>Home</button>
           <button className="button" onClick={() => navigate("/add-student")}>Add Student</button>
           <button className="button" onClick={() => navigate("/profile")}>Profile</button>
-          <button className="button" onClick={handleLogout}>Logout</button>
+          <button className="button" onClick={() => navigate("/logout")}>Logout</button>
+
         </div>
       </div>
 

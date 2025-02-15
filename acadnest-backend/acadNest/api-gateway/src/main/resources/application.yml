@@ -34,12 +34,11 @@ spring:
             - Path=/api-gateway/people/**
           filters:
             - StripPrefix=1
-
 eureka:
   instance:
-    hostname: localhost   # ✅ Forces Eureka to register as localhost
-    prefer-ip-address: false  # ✅ Uses hostname instead of IP
-    instance-id: ${spring.application.name}:${server.port}  # ✅ Unique instance ID
+    hostname: localhost
+    prefer-ip-address: false
+    instance-id: ${spring.application.name}:${server.port}
   client:
     register-with-eureka: true
     fetch-registry: true
