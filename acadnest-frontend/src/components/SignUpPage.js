@@ -1,33 +1,67 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-const handleGoogleSignUp = () => {
+  const handleSignUp = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api-gateway/auth/user/register",
+        { emailId: email, password },
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true, // Ensures cookies like JSESSIONID are sent
+        }
+      );
+
+      const token = response.data.jwt;
+      if (token) {
+        navigate(`/oauth-success?jwt=${token}`);
+      }
+    } catch (err) {
+      if (err.response && err.response.data && err.response.data.error) {
+        setError(err.response.data.error); // Display error from API response
+      } else {
+        setError("Signup failed. Please try again."); // Generic error message
+      }
+    }
+  };
+
+  const handleGoogleSignUp = () => {
     window.location.href = "http://localhost:8080/api-gateway/oauth2/authorization/google";
-};
-
-  // Handle OAuth2 success response
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-  }, []);
-
+  };
 
   return (
     <div style={styles.container}>
       <h2>Sign Up</h2>
-      
-      {/* Email Input */}
-      <input type="email" placeholder="Email" style={styles.input} />
 
-      {/* Password Input */}
-      <input type="password" placeholder="Password" style={styles.input} />
+      <input
+        type="email"
+        placeholder="Email"
+        style={styles.input}
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
 
-      {/* Sign Up Button */}
-      <button style={styles.button}>Sign Up</button>
+      <input
+        type="password"
+        placeholder="Password"
+        style={styles.input}
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
 
-      {/* Google OAuth Sign Up Button */}
+      {error && <p style={styles.error}>{error}</p>} {/* Display API error */}
+
+      <button style={styles.button} onClick={handleSignUp}>
+        Sign Up
+      </button>
+
       <button
         style={{ ...styles.button, backgroundColor: "#DB4437" }}
         onClick={handleGoogleSignUp}
@@ -35,7 +69,6 @@ const handleGoogleSignUp = () => {
         Sign Up with Google
       </button>
 
-      {/* Links */}
       <div style={styles.links}>
         <span style={styles.link} onClick={() => navigate("/login")}>
           Already have an account? Login
@@ -74,6 +107,11 @@ const styles = {
     borderRadius: "5px",
     fontSize: "16px",
     cursor: "pointer",
+  },
+  error: {
+    color: "red",
+    fontSize: "14px",
+    marginBottom: "10px",
   },
   links: {
     marginTop: "10px",

@@ -9,6 +9,7 @@ import OAuthSuccess from "./components/OAuthSuccessPage";
 import Unauthorized from "./components/Unauthorized";
 import PrivateRoute from "./components/PrivateRoute";
 import LogoutPage from "./components/LogoutPage";
+import ForgotPassword from "./components/ForgotPassword";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/oauth-success" element={<OAuthSuccess />} /> 
         <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route
           path="/search"
           element={
