@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -23,7 +24,10 @@ import java.util.List;
 public class JwtAuthFilter implements WebFilter {
 
     private static final List<String> PUBLIC_ENDPOINTS = List.of(
-            "/auth/login",
+            "/auth/user/login",
+            "/api-gateway/auth/user/register",
+            "/api-gateway/auth/user/login",
+            "/auth/user/register",
             "/auth/signup",
             "/oauth2/authorization/google",
             "/api-gateway/oauth2/authorization/google"
@@ -73,7 +77,16 @@ public class JwtAuthFilter implements WebFilter {
 
     private Mono<Void> handleUnauthorized(ServerWebExchange exchange) {
         ServerHttpResponse response = exchange.getResponse();
-        response.setStatusCode(org.springframework.http.HttpStatus.UNAUTHORIZED);
+        response.setStatusCode(HttpStatus.UNAUTHORIZED);
+
+        HttpHeaders headers = response.getHeaders();
+        headers.add("Access-Control-Allow-Origin", "http://localhost:3000");
+        headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        headers.add("Access-Control-Allow-Headers", "Authorization, Content-Type");
+        headers.add("Access-Control-Allow-Credentials", "true");
+
         return response.setComplete();
     }
+
+
 }

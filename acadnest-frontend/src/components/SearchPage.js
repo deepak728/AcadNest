@@ -17,46 +17,51 @@ const SearchPage = () => {
     setSearchQuery(e.target.value);
   };
 
-  const handleSearchClick = async () => {
+const handleSearchClick = async () => {
     if (!searchQuery.trim()) {
-      setSearched(false);
-      return;
+        setSearched(false);
+        return;
     }
 
     setLoading(true);
     setSearched(true);
     setError(null);
 
-    const token = localStorage.getItem("jwt"); // Get JWT token
+    const token = localStorage.getItem("jwt");
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api-gateway/people/student/search`, {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` // Attach JWT
-        },
-        body: JSON.stringify({ field: searchQuery.trim() }),
-      });
+        const response = await fetch(`${API_BASE_URL}/api-gateway/people/student/search`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ field: searchQuery.trim() }),
+        });
 
-      if (response.status === 401) {
-        // Unauthorized - redirect to Unauthorized Page
+        console.log("Response status:", response.status);
+
+        if (response.status === 401) {
+        localStorage.removeItem("jwt");
+        console.error("Unauthorized! Token might be expired.");
         navigate("/unauthorized");
         return;
       }
 
-      if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
-      }
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} - ${response.statusText}`);
+        }
 
-      const data = await response.json();
-      setStudents(data);
+        const data = await response.json();
+        setStudents(data);
     } catch (err) {
-      setError(err.message);
+        console.error("Error caught in catch block:", err);
+        setError(err.message);
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+};
+
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {

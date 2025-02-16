@@ -2,6 +2,7 @@ package com.project.acadNest.auth.service.controller;
 
 
 import com.project.acadNest.auth.service.component.AuthComponent;
+import com.project.acadNest.auth.service.pojo.AuthResponsePojo;
 import com.project.acadNest.auth.service.util.JwtUtil;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -23,19 +24,39 @@ public class AuthController {
     private final AuthComponent authComponent;
     private final JwtUtil jwtUtil;
 
-    @PostMapping("user/register")
-    public ResponseEntity<?> registerUser(@RequestBody @NonNull Map<String,Object> request) {
-        log.debug("Received request to register user with payload {}",request);
-        try{
+    @PostMapping("/user/register")
+    public ResponseEntity<?> registerUser(@RequestBody @NonNull Map<String, Object> request) {
+        log.debug("Received request to register user with payload {}", request);
 
-            String response = authComponent.registerUser(request);
-            return ResponseEntity.ok(response);
-        } catch (BadRequestException e){
-            log.error("Exception occurred while registering user {}",e.getMessage());
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e){
-            log.error("Exception occurred while registering user {}",e.getMessage());
-            return ResponseEntity.internalServerError().body(e.getMessage());
+        try {
+            AuthResponsePojo authResponsePojo = authComponent.registerUser(request);
+            String jwt = authResponsePojo.getJwt();
+
+            return ResponseEntity.ok(Map.of("jwt", jwt));
+        } catch (BadRequestException e) {
+            log.error("Exception during registration: {}", e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            log.error("Internal error during registration: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Internal error"));
+        }
+    }
+
+    @PostMapping("/user/login")
+    public ResponseEntity<?> loginUser(@RequestBody @NonNull Map<String, Object> request) {
+        log.debug("Received request to login user with payload {}", request);
+
+        try {
+            AuthResponsePojo authResponsePojo = authComponent.loginUser(request);
+            String jwt = authResponsePojo.getJwt();
+
+            return ResponseEntity.ok(Map.of("jwt", jwt));
+        } catch (BadRequestException e) {
+            log.error("Exception during login: {}", e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            log.error("Internal error during login: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Internal error"));
         }
     }
 

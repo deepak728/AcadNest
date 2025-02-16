@@ -1,5 +1,6 @@
 package com.project.acadNest.auth.service.util;
 
+import com.project.acadNest.people.service.pojo.Student;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
@@ -12,7 +13,7 @@ import java.util.Map;
 public class JwtUtil {
 
     private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256); // Secure key
-    private static final long EXPIRATION_TIME = 60 * 60 * 1000; // 1 hour
+    private static final long EXPIRATION_TIME = 60 * 1000; // 1 hour
 
     public String generateToken(Map<String, Object> claims) {
         return Jwts.builder()
@@ -55,6 +56,21 @@ public class JwtUtil {
         } catch (JwtException e) {
             return false;
         }
+    }
+
+    public String getJwtToken(Student student){
+        if(student==null) return "";
+
+        String jwtToken = generateToken(Map.of(
+                "email", student.getEmailId(),
+                "name", student.getName(),
+                "rollNo", student.getRollNo(),
+                "branch", student.getBranch().toString(),
+                "year",student.getYear().toString(),
+                "phone", student.getPhoneNo(),
+                "photo", student.getPhoto()
+        ));
+        return jwtToken;
     }
 
 }
